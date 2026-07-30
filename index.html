@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Desafio XP Escolar</title>
+  <!-- Google Fonts: Fredoka & Luckiest Guy para visual de jogo -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Luckiest+Guy&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background: #0f172a;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 10px;
+    }
+
+    /* Container do App */
+    .app-card {
+      width: 100%;
+      max-width: 420px;
+      min-height: 680px;
+      background: linear-gradient(180deg, #1e1b4b 0%, #311b92 40%, #0d47a1 100%);
+      border: 4px solid #4338ca;
+      border-radius: 28px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.6), inset 0 2px 4px rgba(255,255,255,0.3);
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .title-main {
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 28px;
+      color: #ffeb3b;
+      text-shadow: 3px 3px 0px #b71c1c, 0 0 10px rgba(255, 235, 59, 0.5);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      line-height: 1.1;
+    }
+
+    .title-sub {
+      background: #f59e0b;
+      color: #000;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 4px 14px;
+      border-radius: 12px;
+      display: inline-block;
+      margin-top: 6px;
+      box-shadow: 0 3px 0 #b45309;
+      text-transform: uppercase;
+    }
+
+    .subtitle-text {
+      font-size: 12px;
+      color: #cbd5e1;
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    /* Grid Layout */
+    .grid-container {
+      display: grid;
+      gap: 12px;
+      margin: 15px 0;
+    }
+
+    .grid-turmas {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .grid-disciplinas {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Botões do Jogo */
+    .btn-card {
+      background: #2563eb;
+      border: none;
+      border-radius: 16px;
+      padding: 14px 8px;
+      color: white;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      box-shadow: 0 5px 0 #1e40af, 0 8px 15px rgba(0,0,0,0.3);
+      transition: all 0.1s ease;
+      position: relative;
+    }
+
+    .btn-card:active {
+      transform: translateY(4px);
+      box-shadow: 0 1px 0 #1e40af, 0 3px 8px rgba(0,0,0,0.3);
+    }
+
+    .btn-card .icon {
+      font-size: 24px;
+    }
+
+    .btn-card .star {
+      font-size: 12px;
+      color: #fbbf24;
+    }
+
+    /* Cores das Turmas */
+    .btn-t1 { background: #10b981; box-shadow: 0 5px 0 #047857; }
+    .btn-t2 { background: #ec4899; box-shadow: 0 5px 0 #be185d; }
+    .btn-t3 { background: #f59e0b; box-shadow: 0 5px 0 #b45309; }
+
+    /* Layout da Pontuação */
+    .score-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+      margin: 10px 0;
+    }
+
+    .score-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .btn-score {
+      flex: 1;
+      padding: 14px 5px;
+      border-radius: 14px;
+      font-size: 20px;
+      font-weight: 700;
+      border: none;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 5px 0 rgba(0,0,0,0.4);
+      transition: all 0.1s;
+    }
+
+    .btn-score:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 rgba(0,0,0,0.4);
+    }
+
+    /* Tons de Vermelho (-50, -25, -10) */
+    .btn-neg-50 { background: #991b1b; box-shadow: 0 5px 0 #450a0a; }
+    .btn-neg-25 { background: #dc2626; box-shadow: 0 5px 0 #7f1d1d; }
+    .btn-neg-10 { background: #ef4444; box-shadow: 0 5px 0 #991b1b; }
+
+    /* Centro Amarelo (0) */
+    .btn-zero { 
+      background: #f59e0b; 
+      color: #1e1b4b; 
+      box-shadow: 0 5px 0 #b45309; 
+      font-size: 22px; 
+      width: 80%;
+    }
+
+    /* Tons de Verde (+10, +25, +50) */
+    .btn-pos-10 { background: #22c55e; box-shadow: 0 5px 0 #15803d; }
+    .btn-pos-25 { background: #16a34a; box-shadow: 0 5px 0 #166534; }
+    .btn-pos-50 { background: #15803d; box-shadow: 0 5px 0 #14532d; }
+
+    /* Resumo Selecionado */
+    .selected-summary {
+      background: rgba(0, 0, 0, 0.35);
+      border: 2px solid #6366f1;
+      border-radius: 16px;
+      padding: 12px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .summary-text {
+      font-size: 14px;
+      color: #a5f3fc;
+    }
+
+    .summary-value {
+      font-size: 26px;
+      font-weight: 700;
+      color: #fbbf24;
+      margin-top: 2px;
+    }
+
+    /* Botão Enviar Grande */
+    .btn-submit {
+      width: 100%;
+      background: linear-gradient(180deg, #22c55e 0%, #15803d 100%);
+      border: 2px solid #86efac;
+      border-radius: 18px;
+      padding: 16px;
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 24px;
+      color: #ffffff;
+      text-shadow: 2px 2px 0 #14532d;
+      box-shadow: 0 6px 0 #14532d, 0 10px 20px rgba(0,0,0,0.5);
+      cursor: pointer;
+      transition: all 0.1s;
+      margin-top: 10px;
+    }
+
+    .btn-submit:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 #14532d;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .btn-back {
+      background: #475569;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #1e293b;
+    }
+
+    .screen {
+      display: none;
+      flex-direction: column;
+      height: 100%;
+      justify-content: space-between;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    .btn-score.active-score {
+      outline: 4px solid #ffffff;
+      transform: scale(1.05);
+    }
+
+    .success-box {
+      text-align: center;
+      padding: 30px 10px;
+    }
+    .success-icon {
+      font-size: 60px;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-card">
+
+  <!-- TELA 1: TURMAS -->
+  <div id="tela1" class="screen active">
+    <div class="header">
+      <div class="title-main">DESAFIO XP</div>
+      <div class="title-sub">ESCOLHA SUA TURMA</div>
+      <div class="subtitle-text">Selecione para onde vão os pontos</div>
+    </div>
+
+    <div class="grid-container grid-turmas">
+      <button class="btn-card btn-t1" onclick="selectTurma('1A')">1A <span class="star">★</span></button>
+      <button class="btn-card btn-t1" onclick="selectTurma('1B')">1B <span class="star">★</span></button>
+      <button class="btn-card btn-t1" onclick="selectTurma('1C')">1C <span class="star">★</span></button>
+      <button class="btn-card btn-t1" onclick="selectTurma('1D')">1D <span class="star">★</span></button>
+      <button class="btn-card btn-t1" onclick="selectTurma('1E')">1E <span class="star">★</span></button>
+      
+      <button class="btn-card btn-t2" onclick="selectTurma('2A')">2A <span class="star">★</span></button>
+      <button class="btn-card btn-t2" onclick="selectTurma('2B')">2B <span class="star">★</span></button>
+      <button class="btn-card btn-t2" onclick="selectTurma('2C')">2C <span class="star">★</span></button>
+
+      <button class="btn-card btn-t3" onclick="selectTurma('3A')">3A <span class="star">★</span></button>
+      <button class="btn-card btn-t3" onclick="selectTurma('3B')">3B <span class="star">★</span></button>
+      <button class="btn-card btn-t3" onclick="selectTurma('3C')">3C <span class="star">★</span></button>
+    </div>
+
+    <div class="footer" style="justify-content: center;">
+      <span class="subtitle-text">TRABALHO EM EQUIPE • CONHECIMENTO SEMPRE!</span>
+    </div>
+  </div>
+
+  <!-- TELA 2: DISCIPLINAS -->
+  <div id="tela2" class="screen">
+    <div class="header">
+      <div class="title-main">ESCOLHA A DISCIPLINA</div>
+      <div class="title-sub">AVENTURA E APRENDIZADO</div>
+      <div class="subtitle-text">Turma Selecionada: <strong id="lbl-turma" style="color:#f59e0b;">-</strong></div>
+    </div>
+
+    <div class="grid-container grid-disciplinas">
+      <button class="btn-card" onclick="selectDisciplina('Matemática')"><span class="icon">🧮</span> Matemática</button>
+      <button class="btn-card" onclick="selectDisciplina('Português')"><span class="icon">📖</span> Português</button>
+      <button class="btn-card" onclick="selectDisciplina('Inglês')"><span class="icon">🇬🇧</span> Inglês</button>
+      <button class="btn-card" onclick="selectDisciplina('Artes')"><span class="icon">🎨</span> Artes</button>
+      <button class="btn-card" onclick="selectDisciplina('Ed. Física')"><span class="icon">👟</span> Ed. Física</button>
+      <button class="btn-card" onclick="selectDisciplina('Geografia')"><span class="icon">🌍</span> Geografia</button>
+      <button class="btn-card" onclick="selectDisciplina('História')"><span class="icon">🏛️</span> História</button>
+      <button class="btn-card" onclick="selectDisciplina('Física/Química')"><span class="icon">⚛️</span> Física/Química</button>
+    </div>
+
+    <div class="footer">
+      <button class="btn-back" onclick="goToScreen('tela1')">← Voltar</button>
+      <span class="subtitle-text">CADA DISCIPLINA, UM NOVO DESAFIO!</span>
+    </div>
+  </div>
+
+  <!-- TELA 3: ATRIBUIR PONTUAÇÃO -->
+  <div id="tela3" class="screen">
+    <div class="header">
+      <div class="title-main">ATRIBUIR PONTOS</div>
+      <div class="title-sub">PONTUAÇÃO DA RODADA</div>
+    </div>
+
+    <div class="selected-summary">
+      <div class="summary-text"><span id="lbl-summary-turma"></span> • <span id="lbl-summary-disc"></span></div>
+      <div class="summary-value" id="lbl-summary-points">Selecione os pontos</div>
+    </div>
+
+    <div class="score-container">
+      <div class="score-row">
+        <button class="btn-score btn-neg-50" onclick="setPontos(-50, this)">-50</button>
+        <button class="btn-score btn-neg-25" onclick="setPontos(-25, this)">-25</button>
+        <button class="btn-score btn-neg-10" onclick="setPontos(-10, this)">-10</button>
+      </div>
+
+      <div class="score-row">
+        <button class="btn-score btn-zero" onclick="setPontos(0, this)">0 PONTOS</button>
+      </div>
+
+      <div class="score-row">
+        <button class="btn-score btn-pos-10" onclick="setPontos(10, this)">+10</button>
+        <button class="btn-score btn-pos-25" onclick="setPontos(25, this)">+25</button>
+        <button class="btn-score btn-pos-50" onclick="setPontos(50, this)">+50</button>
+      </div>
+    </div>
+
+    <div>
+      <button class="btn-submit" onclick="enviarPontuacao()">ENVIAR XP</button>
+    </div>
+
+    <div class="footer">
+      <button class="btn-back" onclick="goToScreen('tela2')">← Voltar</button>
+    </div>
+  </div>
+
+  <!-- TELA 4: CONFIRMAÇÃO -->
+  <div id="tela4" class="screen">
+    <div class="header">
+      <div class="title-main">TUDO PRONTO!</div>
+    </div>
+
+    <div class="success-box">
+      <div class="success-icon">🏆</div>
+      <h2 style="color: #4ade80; margin-bottom: 10px;">Pontuação Registrada!</h2>
+      <p style="color: #cbd5e1; font-size: 15px;">A pontuação foi enviada com sucesso para a planilha do Google Sheets.</p>
+    </div>
+
+    <button class="btn-submit" onclick="reiniciarApp()" style="margin-bottom: 20px;">
+      QUER RESPONDER NOVAMENTE?
+    </button>
+
+    <div class="footer" style="justify-content: center;">
+      <span class="subtitle-text">DESAFIO XP ESCOLAR</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let appData = {
+    turma: '',
+    disciplina: '',
+    pontos: null
+  };
+
+  // -------------------------------------------------------------
+  // COLE A SUA URL DO GOOGLE APPS SCRIPT ENTRE AS ASPAS ABAIXO:
+  // -------------------------------------------------------------
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyzoFi0wv6PmjSwZebmpgo0r97D7TqRnuPjJhaKPgaBZtUyfCjtwiPViuytBMDRDz2-/exec";
+
+  function goToScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(screenId).classList.add('active');
+  }
+
+  function selectTurma(turma) {
+    appData.turma = turma;
+    document.getElementById('lbl-turma').innerText = turma;
+    document.getElementById('lbl-summary-turma').innerText = "Turma: " + turma;
+    goToScreen('tela2');
+  }
+
+  function selectDisciplina(disc) {
+    appData.disciplina = disc;
+    document.getElementById('lbl-summary-disc').innerText = disc;
+    goToScreen('tela3');
+  }
+
+  function setPontos(valor, elem) {
+    appData.pontos = valor;
+    document.querySelectorAll('.btn-score').forEach(b => b.classList.remove('active-score'));
+    elem.classList.add('active-score');
+
+    const formatted = valor > 0 ? `+${valor} XP` : `${valor} XP`;
+    document.getElementById('lbl-summary-points').innerText = formatted;
+  }
+
+  function enviarPontuacao() {
+    if (appData.pontos === null) {
+      alert("Por favor, selecione uma pontuação antes de enviar!");
+      return;
+    }
+
+    const submitBtn = document.querySelector('#tela3 .btn-submit');
+    submitBtn.innerText = "ENVIANDO...";
+    submitBtn.disabled = true;
+
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(appData)
+    })
+    .then(() => {
+      submitBtn.innerText = "ENVIAR XP";
+      submitBtn.disabled = false;
+      goToScreen('tela4');
+    })
+    .catch(err => {
+      console.error("Erro ao enviar:", err);
+      submitBtn.innerText = "ENVIAR XP";
+      submitBtn.disabled = false;
+      goToScreen('tela4');
+    });
+  }
+
+  function reiniciarApp() {
+    appData = { turma: '', disciplina: '', pontos: null };
+    document.querySelectorAll('.btn-score').forEach(b => b.classList.remove('active-score'));
+    document.getElementById('lbl-summary-points').innerText = "Selecione os pontos";
+    goToScreen('tela1');
+  }
+</script>
+
+</body>
+</html>
