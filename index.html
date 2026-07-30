@@ -50,7 +50,7 @@
         }
 
         .app-header {
-            padding: 12px 16px 8px;
+            padding: 10px 16px 6px;
             text-align: center;
             background: rgba(15, 23, 42, 0.6);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -58,14 +58,14 @@
         }
 
         .app-header h1 {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: 800;
             color: #38bdf8;
             text-transform: uppercase;
         }
 
         .step-indicator {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #94a3b8;
             margin-top: 2px;
             font-weight: 600;
@@ -85,7 +85,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            padding: 12px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
             opacity: 0;
@@ -101,7 +101,7 @@
         }
 
         .screen-title {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 700;
             margin-bottom: 8px;
             color: #f1f5f9;
@@ -151,11 +151,11 @@
             color: #38bdf8;
         }
 
-        /* Tela 3 - Placar Compacto */
+        /* Resumo no topo da Tela 3 */
         .summary-box {
             background: rgba(15, 23, 42, 0.6);
             border-radius: 10px;
-            padding: 8px;
+            padding: 6px 10px;
             margin-bottom: 8px;
             display: flex;
             justify-content: space-around;
@@ -165,57 +165,23 @@
 
         .summary-item label {
             display: block;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: #94a3b8;
             text-transform: uppercase;
         }
 
         .summary-item span {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 800;
             color: #38bdf8;
         }
 
-        /* Botões de Pontuação Reduzidos */
-        .points-grid-compact {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
-            margin-bottom: 8px;
-            flex: 1;
-            align-content: center;
-        }
-
-        .btn-point {
-            background: #334155;
-            border: 2px solid transparent;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 0.95rem;
-            font-weight: 800;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px 4px;
-        }
-
-        .btn-point.positive { color: #4ade80; }
-        .btn-point.negative { color: #f87171; }
-        .btn-point.zero { color: #facc15; }
-
-        .btn-point.selected {
-            border-color: #38bdf8;
-            background: #1e293b;
-            box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
-        }
-
-        .actions-row {
+        /* Botões de Ação no Topo da Tela 3 */
+        .actions-row-top {
             display: flex;
             gap: 8px;
-            margin-top: auto;
+            margin-bottom: 10px;
             flex-shrink: 0;
-            padding-top: 4px;
         }
 
         .btn-back {
@@ -227,6 +193,9 @@
             font-weight: 700;
             cursor: pointer;
             font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         .btn-submit {
@@ -237,14 +206,53 @@
             padding: 10px;
             border-radius: 10px;
             font-weight: 800;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
 
         .btn-submit:disabled {
-            opacity: 0.5;
+            opacity: 0.4;
+            background: #334155;
+            color: #94a3b8;
             cursor: not-allowed;
+        }
+
+        /* Botões de Pontuação Reduzidos */
+        .points-grid-compact {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            flex: 1;
+            align-content: start;
+        }
+
+        .btn-point {
+            background: #334155;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 4px;
+        }
+
+        .btn-point.positive { color: #4ade80; }
+        .btn-point.negative { color: #f87171; }
+        .btn-point.zero { color: #facc15; }
+
+        .btn-point.selected {
+            border-color: #38bdf8;
+            background: #1e293b;
+            box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
         }
 
         .success-overlay {
@@ -315,20 +323,29 @@
                     <button class="btn-card" onclick="selectDisciplina('FILOSOFIA')"><i class="fa-solid fa-brain"></i> FILOSOFIA</button>
                     <button class="btn-card" onclick="selectDisciplina('SOCIOLOGIA')"><i class="fa-solid fa-people-group"></i> SOCIOLOGIA</button>
                 </div>
-                <div class="actions-row">
+                <div style="margin-top: auto; padding-top: 4px;">
                     <button class="btn-back" onclick="goToScreen(1)"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
                 </div>
             </div>
 
-            <!-- TELA 3: PONTUAÇÃO (Tamanho Reduzido) -->
+            <!-- TELA 3: PONTUAÇÃO (BOTÕES DE AÇÃO NO TOPO) -->
             <div class="screen" id="screen3">
-                <div class="screen-title"><i class="fa-solid fa-star"></i> Atribuir Pontos</div>
-
+                
+                <!-- 1. RESUMO -->
                 <div class="summary-box">
                     <div class="summary-item"><label>Turma</label><span id="summaryTurma">-</span></div>
                     <div class="summary-item"><label>Disciplina</label><span id="summaryDisciplina">-</span></div>
                 </div>
 
+                <!-- 2. BOTÕES VOLTAR E ENVIAR NO TOPO -->
+                <div class="actions-row-top">
+                    <button class="btn-back" onclick="goToScreen(2)"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+                    <button class="btn-submit" id="btnSubmit" disabled onclick="enviarPontuacao()"><i class="fa-solid fa-paper-plane"></i> ENVIAR XP</button>
+                </div>
+
+                <div class="screen-title" style="font-size: 0.8rem; margin-bottom: 6px;"><i class="fa-solid fa-hand-pointer"></i> Selecione a Pontuação:</div>
+
+                <!-- 3. SELEÇÃO DE PONTOS -->
                 <div class="points-grid-compact">
                     <button class="btn-point negative" onclick="selectPontos(-50)">-50 XP</button>
                     <button class="btn-point negative" onclick="selectPontos(-25)">-25 XP</button>
@@ -341,10 +358,6 @@
                     <button class="btn-point positive" onclick="selectPontos(50)">+50 XP</button>
                 </div>
 
-                <div class="actions-row">
-                    <button class="btn-back" onclick="goToScreen(2)"><i class="fa-solid fa-arrow-left"></i> Voltar</button>
-                    <button class="btn-submit" id="btnSubmit" disabled onclick="enviarPontuacao()"><i class="fa-solid fa-paper-plane"></i> ENVIAR XP</button>
-                </div>
             </div>
 
         </div>
@@ -381,13 +394,23 @@
         function selectDisciplina(disciplina) {
             state.disciplina = disciplina;
             document.getElementById('summaryDisciplina').innerText = disciplina;
+            
+            // Reseta a pontuação ao entrar na Tela 3
+            state.pontos = null;
+            document.querySelectorAll('.btn-point').forEach(btn => btn.classList.remove('selected'));
+            document.getElementById('btnSubmit').disabled = true;
+
             goToScreen(3);
         }
 
         function selectPontos(pontos) {
             state.pontos = pontos;
+            
+            // Marca o botão escolhido com destaque
             document.querySelectorAll('.btn-point').forEach(btn => btn.classList.remove('selected'));
             event.currentTarget.classList.add('selected');
+            
+            // LIBERA O BOTÃO DE ENVIAR
             document.getElementById('btnSubmit').disabled = false;
         }
 
